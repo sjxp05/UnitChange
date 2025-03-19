@@ -1,0 +1,11 @@
+package units;
+
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+public class Currency implements Unit {
+    public void getExchange(){
+        URL url = new URL("API URL");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    }
+}
