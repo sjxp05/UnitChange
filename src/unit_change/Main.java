@@ -9,7 +9,7 @@ public class Main {
     static String[] num2Unit = {};
 
     static String formatResult(double value) {
-        String formatted = String.format("%10g", value);
+        String formatted = String.format("%.10g", value);
         int i;
 
         if (formatted.indexOf(".", 0) >= 0) {
@@ -36,11 +36,11 @@ public class Main {
         String selectedUnit = "";
         double finding; // 단위변환 하려는 값
 
-        System.out.println("========================================");
+        System.out.println("==========================================");
         System.out.println("단위 변환 프로그램\n");
         System.out.println("1. 길이   2. 넓이   3. 부피   4. 무게");
-        System.out.println("5. 온도   6. 속도   7. 환율(미완성)");
-        System.out.println("========================================");
+        System.out.println("5. 온도   6. 속도(미완성)   7. 환율(미완성)");
+        System.out.println("==========================================");
 
         while (true) {
             System.out.print("\n번호를 입력하세요: ");
@@ -57,39 +57,40 @@ public class Main {
                 case 1:
                     Length.getLength(map);
                     num2Unit = (String[]) Length.lengthUnits.clone();
-                    System.out.println("\n1. m   2. mm   3. cm   4. km");
-                    System.out.println("5. in(인치)   6. ft(피트)   7. yd(야드)   8. mile(마일)");
-                    System.out.println("9. 자   10. 간   11. 정   12. 리   13. 해리");
                     break;
 
                 case 2:
-                   
+                    Width.getWidth(map);
+                    num2Unit = (String[]) Width.widthUnits.clone();
                     break;
 
                 case 3:
-                    
+                    Volume.getVolume(map);
+                    num2Unit = (String[]) Volume.volumeUnits.clone();
                     break;
 
                 case 4:
                     Weight.getWeight(map);
                     num2Unit = (String[]) Weight.weightUnits.clone();
-                    System.out.println("\n1. kg   2. mg   3. g   4. t(톤)");
-                    System.out.println("5. kt(킬로톤)   6. gr(그레인)   7. oz(온스)   8. lb(파운드)");
-                    System.out.println("9. 돈   10. 냥   11. 근   12. 관");
                     break;
 
                 case 5:
                     num2Unit = (String[]) Temperature.tempUnits.clone();
-                    System.out.println("\n1. ºC(섭씨)   2. ºF(화씨)   3. K(캘빈)");
                     break;
 
                 case 6:
-
+                    // 미완성
                     break;
 
                 case 7:
-
-                    break;
+                    /*
+                     * 수정을..... 해야되는데에.....
+                     * 근데 그러려면 api 호출 공부해야되는데...
+                     * api호출하려면 환율사이트에 요청도 해야되는데ㅔ......
+                     * 언제하냐 ㄹㅇ
+                     */
+                    System.out.println("미완성입니다 돌아가세요 ㅠㅠ");
+                    continue;
 
                 default:
                     System.out.println("올바르게 입력해 주세요!");
@@ -97,10 +98,18 @@ public class Main {
             }
             break;
         }
+        
+        for (int i = 0; i < num2Unit.length; i++) {
+            if (i % 4 == 0 && i < 12) {
+                System.out.print("\n");
+            }
+
+            System.out.print((i + 1) + ". " + num2Unit[i] + "   ");
+        }
 
         while (true) {
             try {
-                System.out.print("\n변환할 값의 단위(번호)를 입력하세요: ");
+                System.out.print("\n\n변환할 값의 단위(번호)를 입력하세요: ");
                 select = sc.nextInt();
                 sc.nextLine();
 
@@ -115,7 +124,7 @@ public class Main {
                 continue;
             }
         }
-        
+
         selectedUnit = num2Unit[select - 1];
         
         while (true) {
