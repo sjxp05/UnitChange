@@ -9,7 +9,7 @@ public class Main {
     static String[] num2Unit = {};
 
     static String formatResult(double value) {
-        String formatted = String.format("%.10g", value);
+        String formatted = String.format("%.9g", value);
         int i;
 
         if (formatted.indexOf(".", 0) >= 0) {
@@ -80,7 +80,8 @@ public class Main {
 
                 case 6:
                     // 미완성
-                    break;
+                    System.out.println("미완성입니다 돌아가세요 ㅠㅠ");
+                    continue;
 
                 case 7:
                     /*
@@ -96,6 +97,7 @@ public class Main {
                     System.out.println("올바르게 입력해 주세요!");
                     continue;
             }
+
             break;
         }
         
@@ -105,11 +107,15 @@ public class Main {
             }
 
             System.out.print((i + 1) + ". " + num2Unit[i] + "   ");
+
+            if (i == num2Unit.length - 1) {
+                System.out.println();
+            }
         }
 
         while (true) {
             try {
-                System.out.print("\n\n변환할 값의 단위(번호)를 입력하세요: ");
+                System.out.print("\n변환할 값의 단위(번호)를 입력하세요: ");
                 select = sc.nextInt();
                 sc.nextLine();
 
