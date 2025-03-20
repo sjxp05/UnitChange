@@ -40,7 +40,7 @@ public class Main {
         System.out.println("============================================");
         System.out.println("단위 변환 프로그램\n");
         System.out.println("1. 길이   2. 넓이   3. 부피   4. 무게");
-        System.out.println("5. 온도   6. 속도(미완성)   7. 환율(미완성)");
+        System.out.println("5. 온도   6. 속도   7. 환율(미완성)");
         System.out.println("============================================");
 
         while (true) {
@@ -81,9 +81,9 @@ public class Main {
                     break;
 
                 case 6:
-                    // 미완성
-                    System.out.println("미완성입니다 돌아가세요 ㅠㅠ");
-                    continue;
+                    Speed.getSpeed(map);
+                    num2Unit = (String[]) Speed.speedUnits.clone();
+                    break;
 
                 case 7:
                     /*
