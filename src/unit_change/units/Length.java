@@ -3,7 +3,8 @@ package unit_change.units;
 import java.util.HashMap;
 
 public class Length {
-    public static String[] lengthUnits = { "m", "mm", "cm", "km", "in(인치)", "ft(피트)", "yd(야드)", "mile(마일)" };
+    public static final String[] lengthUnits = { "m", "mm", "cm", "km", "in(인치)", "ft(피트)", "yd(야드)", "mile(마일)", "자",
+            "간", "정", "리" };
 
     public static HashMap<String, Double> getLength(HashMap<String, Double> map) {
         map.put("m", 1.0);
@@ -14,6 +15,10 @@ public class Length {
         map.put("ft(피트)", 3.28084);
         map.put("yd(야드)", 1.093613);
         map.put("mile(마일)", 0.000621);
+        map.put("자", 3.3);
+        map.put("간", 0.55);
+        map.put("정", 0.009167);
+        map.put("리", 0.002546);
 
         return map;
     }
