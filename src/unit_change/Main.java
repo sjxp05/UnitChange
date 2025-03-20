@@ -18,6 +18,7 @@ public class Main {
                     break;
                 }
             }
+            
             if (formatted.charAt(i) == '.') {
                 i--;
             }
