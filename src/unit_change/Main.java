@@ -18,7 +18,7 @@ public class Main {
                     break;
                 }
             }
-            
+
             if (formatted.charAt(i) == '.') {
                 i--;
             }
@@ -33,11 +33,13 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         int select;
         int u_select;
-        String selectedUnit="";
+        String selectedUnit = "";
         double finding;
 
-        System.out.println("===================================\n" + "단위 변환 프로그램\n\n1. 길이 2. 무게 3. 온도 4. 환율"
-                 + "\n===================================");
+        System.out.println("===================================");
+        System.out.println("단위 변환 프로그램\n");
+        System.out.println("1. 길이 2. 무게 3. 온도 4. 환율");
+        System.out.println("===================================");
 
         while (true) {
             System.out.print("\n번호를 입력하세요: ");
