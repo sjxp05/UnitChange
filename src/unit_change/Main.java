@@ -5,9 +5,10 @@ import java.util.Scanner;
 import unit_change.units.*;
 
 public class Main {
-    static HashMap<String, Double> map = new HashMap<>();
-    static String[] num2Unit = {};
+    static HashMap<String, Double> map = new HashMap<>(); // 단위 - 값 저장하는 맵
+    static String[] num2Unit = {}; // 단위 목록
 
+    // 형식 이쁘게 바꿔주는 함수
     static String formatResult(double value) {
         String formatted = String.format("%.9g", value);
         int i;
@@ -33,7 +34,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         int category; // 길이 넓이 등 종류 선택
         int select; // 한 종류 내에서 단위 선택
-        String selectedUnit = "";
+        String selectedUnit = ""; // 사용자가 선택한 단위(별건없고 그냥 꾸밈용도)
         double finding; // 단위변환 하려는 값
 
         System.out.println("============================================");
@@ -49,14 +50,14 @@ public class Main {
                 sc.nextLine();
             } catch (Exception e) {
                 System.out.println("올바르게 입력해 주세요!");
-                sc.nextLine();
+                sc.nextLine(); // 이때도 꼭 nextLine() 해줘야됨!
                 continue;
             }
 
             switch (category) {
                 case 1:
-                    Length.getLength(map);
-                    num2Unit = (String[]) Length.lengthUnits.clone();
+                    Length.getLength(map); // 해시맵에 단위-곱하는 값 각각 추가
+                    num2Unit = (String[]) Length.lengthUnits.clone(); // 단위 이름(배열) 복사
                     break;
 
                 case 2:
@@ -75,6 +76,7 @@ public class Main {
                     break;
 
                 case 5:
+                    // 온도는 맵 필요없음
                     num2Unit = (String[]) Temperature.tempUnits.clone();
                     break;
 
@@ -101,6 +103,7 @@ public class Main {
             break;
         }
         
+        // 단위별로 번호 프린트
         for (int i = 0; i < num2Unit.length; i++) {
             if (i % 4 == 0 && i < 12) {
                 System.out.print("\n");
@@ -119,7 +122,7 @@ public class Main {
                 select = sc.nextInt();
                 sc.nextLine();
 
-                if (select < 1 || select > num2Unit.length) {
+                if (select < 1 || select > num2Unit.length) { // num2Unit 배열 인덱스에 맞지않는것은 거름
                     System.out.println("올바르게 입력해 주세요!");
                     continue;
                 }
@@ -131,6 +134,10 @@ public class Main {
             }
         }
 
+        /*
+         * 사용자 입력값: 1~length (편의상 1부터)
+         * 배열 인덱스: 0~(length-1)
+         */
         selectedUnit = num2Unit[select - 1];
         
         while (true) {
@@ -149,7 +156,7 @@ public class Main {
         System.out.println("\n" + formatResult(finding) + " " + selectedUnit + " =>");
         System.out.println("------------------------------------");
 
-        if (category == 5) {
+        if (category == 5) { // 온도 계산은 따로 식이 정해져있음
             double[] results = Temperature.calculateTemp(finding, select);
 
             for (int i = 0; i < 3; i++) {
@@ -157,11 +164,11 @@ public class Main {
                 System.out.println(num2Unit[i]);
             }
         } else {
-            if (select != 1) {
+            if (select != 1) { // 기준이 되는 단위로 변환
                 finding /= map.get(selectedUnit);
             }
 
-            for (String i : num2Unit) {
+            for (String i : num2Unit) { // 기준 단위로 된 값을 각 단위별로 변환
                 System.out.print(formatResult(finding * map.get(i)) + " ");
                 System.out.println(i);
             }
