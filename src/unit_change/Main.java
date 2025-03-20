@@ -1,6 +1,7 @@
-import java.util.Scanner;
+package unit_change;
 
-import units.*;
+import java.util.Scanner;
+import unit_change.units.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -20,6 +21,27 @@ public class Main {
                 System.out.println("다시 입력해 주세요!");
                 continue;
             }
+        }
+
+        switch (select) {
+            case 1:
+                
+                break;
+        
+            case 2:
+            
+                break;
+    
+            case 3:
+            
+                break;
+    
+            case 4:
+            
+                break;
+    
+            default:
+                break;
         }
 
         sc.close();
