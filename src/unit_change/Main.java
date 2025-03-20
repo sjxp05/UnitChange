@@ -31,20 +31,21 @@ public class Main {
     
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int select;
-        int u_select;
+        int category; // 길이 넓이 등 종류 선택
+        int select; // 한 종류 내에서 단위 선택
         String selectedUnit = "";
-        double finding;
+        double finding; // 단위변환 하려는 값
 
-        System.out.println("===================================");
+        System.out.println("========================================");
         System.out.println("단위 변환 프로그램\n");
-        System.out.println("1. 길이 2. 무게 3. 온도 4. 환율");
-        System.out.println("===================================");
+        System.out.println("1. 길이   2. 넓이   3. 부피   4. 무게");
+        System.out.println("5. 온도   6. 속도   7. 환율(미완성)");
+        System.out.println("========================================");
 
         while (true) {
             System.out.print("\n번호를 입력하세요: ");
             try {
-                select = sc.nextInt();
+                category = sc.nextInt();
                 sc.nextLine();
             } catch (Exception e) {
                 System.out.println("올바르게 입력해 주세요!");
@@ -52,7 +53,7 @@ public class Main {
                 continue;
             }
 
-            switch (select) {
+            switch (category) {
                 case 1:
                     Length.getLength(map);
                     num2Unit = (String[]) Length.lengthUnits.clone();
@@ -62,6 +63,14 @@ public class Main {
                     break;
 
                 case 2:
+                   
+                    break;
+
+                case 3:
+                    
+                    break;
+
+                case 4:
                     Weight.getWeight(map);
                     num2Unit = (String[]) Weight.weightUnits.clone();
                     System.out.println("\n1. kg   2. mg   3. g   4. t(톤)");
@@ -69,12 +78,16 @@ public class Main {
                     System.out.println("9. 돈   10. 냥   11. 근   12. 관");
                     break;
 
-                case 3:
+                case 5:
                     num2Unit = (String[]) Temperature.tempUnits.clone();
                     System.out.println("\n1. ºC(섭씨)   2. ºF(화씨)   3. K(캘빈)");
                     break;
 
-                case 4:
+                case 6:
+
+                    break;
+
+                case 7:
 
                     break;
 
@@ -88,10 +101,10 @@ public class Main {
         while (true) {
             try {
                 System.out.print("\n변환할 값의 단위(번호)를 입력하세요: ");
-                u_select = sc.nextInt();
+                select = sc.nextInt();
                 sc.nextLine();
 
-                if (u_select < 1 || u_select > num2Unit.length) {
+                if (select < 1 || select > num2Unit.length) {
                     System.out.println("올바르게 입력해 주세요!");
                     continue;
                 }
@@ -102,7 +115,8 @@ public class Main {
                 continue;
             }
         }
-        selectedUnit = num2Unit[u_select - 1];
+        
+        selectedUnit = num2Unit[select - 1];
         
         while (true) {
             try {
@@ -120,15 +134,15 @@ public class Main {
         System.out.println("\n" + formatResult(finding) + " " + selectedUnit + " =>");
         System.out.println("------------------------------------");
 
-        if (select == 3) {
-            double[] results = Temperature.calculateTemp(finding, u_select);
+        if (category == 5) {
+            double[] results = Temperature.calculateTemp(finding, select);
 
             for (int i = 0; i < 3; i++) {
                 System.out.print(formatResult(results[i]) + " ");
                 System.out.println(num2Unit[i]);
             }
         } else {
-            if (u_select != 1) {
+            if (select != 1) {
                 finding /= map.get(selectedUnit);
             }
 
