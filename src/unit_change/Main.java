@@ -36,11 +36,11 @@ public class Main {
         String selectedUnit = "";
         double finding; // 단위변환 하려는 값
 
-        System.out.println("==========================================");
+        System.out.println("============================================");
         System.out.println("단위 변환 프로그램\n");
         System.out.println("1. 길이   2. 넓이   3. 부피   4. 무게");
         System.out.println("5. 온도   6. 속도(미완성)   7. 환율(미완성)");
-        System.out.println("==========================================");
+        System.out.println("============================================");
 
         while (true) {
             System.out.print("\n번호를 입력하세요: ");
