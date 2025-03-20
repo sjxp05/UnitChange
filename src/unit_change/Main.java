@@ -92,6 +92,7 @@ public class Main {
                      * api호출하려면 환율사이트에 요청도 해야되는데ㅔ......
                      * 언제하냐 ㄹㅇ
                      */
+                    num2Unit = (String[]) Currency.monetaryUnits.clone();
                     System.out.println("미완성입니다 돌아가세요 ㅠㅠ");
                     continue;
 
@@ -164,7 +165,14 @@ public class Main {
                 System.out.println(num2Unit[i]);
             }
         } else {
-            if (select != 1) { // 기준이 되는 단위로 변환
+            if (category == 7) { // 환율계산은 최신 환율정보를 불러오기 위해 api 호출 필요
+                Currency.getAPI();
+                Currency.getExchange(map);
+
+                if (select != 2) { // 달러(num2Unit[1]) 기준
+                    finding /= map.get(selectedUnit);
+                }
+            } else if (select != 1) {
                 finding /= map.get(selectedUnit);
             }
 
