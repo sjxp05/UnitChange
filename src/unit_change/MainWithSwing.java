@@ -7,56 +7,77 @@ import java.awt.event.ActionListener;
 import java.util.HashMap;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 
 public class MainWithSwing extends JFrame {
     static HashMap<String, Double> map = new HashMap<>(); // 단위 - 값 저장하는 맵
     static String[] num2Unit = {}; // 단위 목록
     static String[] categories = { "길이", "넓이", "부피", "무게", "온도", "속도", "환율" };
 
+    JPanel ctPanel = new JPanel();
+    JComboBox<String> unitChoose = new JComboBox<>();
+    JTextField input = new JTextField();
+    JLabel resultLb = new JLabel();
+    JScrollPane resultPane = new JScrollPane(resultLb);
+    JButton calcBt = new JButton("변환");
+
     public MainWithSwing() {
         setTitle("단위 변환기");
-        setSize(505, 450);
+        setSize(500, 440);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(null);
 
-        Container pane = getContentPane();
-        pane.setLayout(null);
+        ctPanel.setLayout(null);
+        ctPanel.setBounds(35, 80, 420, 290);
+        ctPanel.setBorder(new LineBorder(Color.GRAY));
+        add(ctPanel);
+        ctPanel.setVisible(false);
 
-        // JPanel ctPanel = new JPanel();
-        // ctPanel.setBounds(40, 80, 420, 290);
-        // pane.add(ctPanel); 얘 어카지
-
-        JComboBox<String> unitChoose = new JComboBox<>();
         unitChoose.setFont(new Font("Sans Serif", Font.PLAIN, 15));
-        unitChoose.setBounds(270, 100, 100, 30);
-        pane.add(unitChoose);
+        unitChoose.setBounds(230, 20, 100, 30);
+        ctPanel.add(unitChoose);
 
-        JButton calcBt = new JButton("변환");
-        calcBt.setBounds(380, 100, 60, 30);
-        pane.add(calcBt);
-
-        JTextField input = new JTextField();
         input.setFont(new Font("Sans Serif", Font.PLAIN, 15));
-        input.setBounds(60, 100, 200, 30);
-        pane.add(input);
+        input.setBounds(20, 20, 200, 30);
+        ctPanel.add(input);
 
-        JScrollPane resultPane = new JScrollPane();
-        resultPane.setBounds(60, 150, 380, 200);
-        pane.add(resultPane);
+        resultLb.setFont(new Font("Sans Serif", Font.PLAIN, 15));
+
+        resultPane.setBounds(20, 70, 380, 200);
+        ctPanel.add(resultPane);
         resultPane.setVisible(false);
+
+        calcBt.setBounds(340, 20, 60, 30);
+        calcBt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resultPane.setVisible(true);
+                if (unitChoose.getItemAt(0) == "ºC") {
+                    String results = "";
+                    // 온도 계산 함수수
+                    resultLb.setText(results);
+                } else {
+                    String results = "";
+                    // 단위만 바꾸기
+                    resultLb.setText(results);
+                }
+            }
+        });
+        ctPanel.add(calcBt);
 
         JButton[] ctButtons = new JButton[7];
         for (int i = 0; i < categories.length; i++) {
             ctButtons[i] = new JButton(categories[i]);
-            ctButtons[i].setBounds(70 * i, 0, 70, 50);
-            pane.add(ctButtons[i]);
+            ctButtons[i].setBounds(70 * i, 0, 68, 50);
+            add(ctButtons[i]);
 
             switch (i) {
                 case 0:
                     ctButtons[i].addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            unitChoose.removeAllItems();
+                            clearUI();
                             map = Length.getLength(map);
                             for (String i : Length.lengthUnits) {
                                 unitChoose.addItem(i);
@@ -69,7 +90,7 @@ public class MainWithSwing extends JFrame {
                     ctButtons[i].addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            unitChoose.removeAllItems();
+                            clearUI();
                             map = Width.getWidth(map);
                             for (String i : Width.widthUnits) {
                                 unitChoose.addItem(i);
@@ -82,7 +103,7 @@ public class MainWithSwing extends JFrame {
                     ctButtons[i].addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            unitChoose.removeAllItems();
+                            clearUI();
                             map = Volume.getVolume(map);
                             for (String i : Volume.volumeUnits) {
                                 unitChoose.addItem(i);
@@ -95,7 +116,7 @@ public class MainWithSwing extends JFrame {
                     ctButtons[i].addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            unitChoose.removeAllItems();
+                            clearUI();
                             map = Weight.getWeight(map);
                             for (String i : Weight.weightUnits) {
                                 unitChoose.addItem(i);
@@ -108,7 +129,7 @@ public class MainWithSwing extends JFrame {
                     ctButtons[i].addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            unitChoose.removeAllItems();
+                            clearUI();
                             for (String i : Temperature.tempUnits) {
                                 unitChoose.addItem(i);
                             }
@@ -120,7 +141,7 @@ public class MainWithSwing extends JFrame {
                     ctButtons[i].addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            unitChoose.removeAllItems();
+                            clearUI();
                             map = Speed.getSpeed(map);
                             for (String i : Speed.speedUnits) {
                                 unitChoose.addItem(i);
@@ -130,7 +151,12 @@ public class MainWithSwing extends JFrame {
                     break;
 
                 case 6:
-
+                    ctButtons[i].addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            clearUI();
+                        }
+                    });
                     break;
 
                 default:
@@ -139,6 +165,13 @@ public class MainWithSwing extends JFrame {
         }
 
         setVisible(true);
+    }
+    
+    public void clearUI() {
+        unitChoose.removeAllItems();
+        ctPanel.setVisible(true);
+        resultPane.setVisible(false);
+        map.clear();
     }
     
     static String formatResult(double value) {
