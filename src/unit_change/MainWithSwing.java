@@ -11,16 +11,15 @@ import javax.swing.border.LineBorder;
 
 public class MainWithSwing extends JFrame {
     static HashMap<String, Double> map = new HashMap<>(); // 단위 - 값 저장하는 맵
-    static String[] num2Unit = {}; // 단위 목록
-    static String[] categories = { "길이", "넓이", "부피", "무게", "온도", "속도", "환율" };
-    static String[] units;
+    static String[] categories = { "길이", "넓이", "부피", "무게", "온도", "속도", "환율" }; // 버튼 텍스트로 쓸 배열
+    static String[] unitList; // 단위 목록
 
-    JPanel ctPanel = new JPanel();
-    JComboBox<String> unitChoose = new JComboBox<>();
-    JTextField input = new JTextField();
-    JLabel resultLb = new JLabel();
-    JScrollPane resultPane = new JScrollPane(resultLb);
-    JButton calcBt = new JButton("변환");
+    JPanel ctPanel = new JPanel(); // 입력창, 콤보박스, 버튼, 결과창 모두 넣은 패널
+    JComboBox<String> unitChoose = new JComboBox<>(); // 단위 선택 콤보박스
+    JTextField input = new JTextField(); // 변환할 값 입력
+    JLabel resultLb = new JLabel(); // 결과 표시 라벨
+    JScrollPane resultPane = new JScrollPane(resultLb); // 긴 라벨을 표시하기 위한 스크롤팬
+    JButton calcBt = new JButton("변환"); // 변환 수행 버튼
 
     public MainWithSwing() {
         // 전체 창 설정
@@ -53,7 +52,6 @@ public class MainWithSwing extends JFrame {
         // 결과스크롤팬
         resultPane.setBounds(20, 70, 380, 200);
         ctPanel.add(resultPane);
-        resultPane.setVisible(false);
 
         // 변환 버튼
         calcBt.setBounds(340, 20, 60, 30);
@@ -61,15 +59,15 @@ public class MainWithSwing extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 resultPane.setVisible(true);
-                if (units.length == 3) {
+                if (unitList.length == 3) {
                     String results = "<html><body>";
                     try {
                         double finding = Double.parseDouble(input.getText());
                         double temps[] = Temperature.calculateTemp(finding, unitChoose.getSelectedIndex() + 1);
 
-                        for (int i = 0; i < units.length; i++) {
-                            results += (formatResult(temps[i]) + " " + units[i]);
-                            if (i == units.length - 1) {
+                        for (int i = 0; i < unitList.length; i++) {
+                            results += (formatResult(temps[i]) + " " + unitList[i]);
+                            if (i == unitList.length - 1) {
                                 results += "</body></html>";
                             } else {
                                 results += "<br>";
@@ -89,9 +87,9 @@ public class MainWithSwing extends JFrame {
                             finding /= map.get(unitChoose.getItemAt(unitChoose.getSelectedIndex()));
                         }
 
-                        for (int i = 0; i < units.length; i++) {
-                            results += (formatResult(finding * map.get(units[i])) + " " + units[i]);
-                            if (i == units.length - 1) {
+                        for (int i = 0; i < unitList.length; i++) {
+                            results += (formatResult(finding * map.get(unitList[i])) + " " + unitList[i]);
+                            if (i == unitList.length - 1) {
                                 results += "</body></html>";
                             } else {
                                 results += "<br>";
@@ -121,7 +119,7 @@ public class MainWithSwing extends JFrame {
                         public void actionPerformed(ActionEvent e) {
                             clearUI();
                             map = Length.getLength(map);
-                            units = (String[]) Length.lengthUnits.clone();
+                            unitList = (String[]) Length.lengthUnits.clone();
                             for (String i : Length.lengthUnits) {
                                 unitChoose.addItem(i);
                             }
@@ -135,7 +133,7 @@ public class MainWithSwing extends JFrame {
                         public void actionPerformed(ActionEvent e) {
                             clearUI();
                             map = Width.getWidth(map);
-                            units = (String[]) Width.widthUnits.clone();
+                            unitList = (String[]) Width.widthUnits.clone();
                             for (String i : Width.widthUnits) {
                                 unitChoose.addItem(i);
                             }
@@ -149,7 +147,7 @@ public class MainWithSwing extends JFrame {
                         public void actionPerformed(ActionEvent e) {
                             clearUI();
                             map = Volume.getVolume(map);
-                            units = (String[]) Volume.volumeUnits.clone();
+                            unitList = (String[]) Volume.volumeUnits.clone();
                             for (String i : Volume.volumeUnits) {
                                 unitChoose.addItem(i);
                             }
@@ -163,7 +161,7 @@ public class MainWithSwing extends JFrame {
                         public void actionPerformed(ActionEvent e) {
                             clearUI();
                             map = Weight.getWeight(map);
-                            units = (String[]) Weight.weightUnits.clone();
+                            unitList = (String[]) Weight.weightUnits.clone();
                             for (String i : Weight.weightUnits) {
                                 unitChoose.addItem(i);
                             }
@@ -176,7 +174,7 @@ public class MainWithSwing extends JFrame {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             clearUI();
-                            units = (String[]) Temperature.tempUnits.clone();
+                            unitList = (String[]) Temperature.tempUnits.clone();
                             for (String i : Temperature.tempUnits) {
                                 unitChoose.addItem(i);
                             }
@@ -190,7 +188,7 @@ public class MainWithSwing extends JFrame {
                         public void actionPerformed(ActionEvent e) {
                             clearUI();
                             map = Speed.getSpeed(map);
-                            units = (String[]) Speed.speedUnits.clone();
+                            unitList = (String[]) Speed.speedUnits.clone();
                             for (String i : Speed.speedUnits) {
                                 unitChoose.addItem(i);
                             }
@@ -219,7 +217,6 @@ public class MainWithSwing extends JFrame {
         input.setText("");
         unitChoose.removeAllItems();
         ctPanel.setVisible(true);
-        resultPane.setVisible(false);
         map.clear();
     }
     
