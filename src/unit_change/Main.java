@@ -6,7 +6,7 @@ import unit_change.units.*;
 
 public class Main {
     static HashMap<String, Double> map = new HashMap<>(); // 단위 - 값 저장하는 맵
-    static String[] num2Unit = {}; // 단위 목록
+    static String[] unitList = {}; // 단위 목록
 
     // 형식 이쁘게 바꿔주는 함수
     static String formatResult(double value) {
@@ -57,37 +57,37 @@ public class Main {
             switch (category) {
                 case 1:
                     Length.getLength(map); // 해시맵에 단위-곱하는 값 각각 추가
-                    num2Unit = (String[]) Length.lengthUnits.clone(); // 단위 이름(배열) 복사
+                    unitList = (String[]) Length.lengthUnits.clone(); // 단위 이름(배열) 복사
                     break;
 
                 case 2:
                     Width.getWidth(map);
-                    num2Unit = (String[]) Width.widthUnits.clone();
+                    unitList = (String[]) Width.widthUnits.clone();
                     break;
 
                 case 3:
                     Volume.getVolume(map);
-                    num2Unit = (String[]) Volume.volumeUnits.clone();
+                    unitList = (String[]) Volume.volumeUnits.clone();
                     break;
 
                 case 4:
                     Weight.getWeight(map);
-                    num2Unit = (String[]) Weight.weightUnits.clone();
+                    unitList = (String[]) Weight.weightUnits.clone();
                     break;
 
                 case 5:
                     // 온도는 맵 필요없음
-                    num2Unit = (String[]) Temperature.tempUnits.clone();
+                    unitList = (String[]) Temperature.tempUnits.clone();
                     break;
 
                 case 6:
                     Speed.getSpeed(map);
-                    num2Unit = (String[]) Speed.speedUnits.clone();
+                    unitList = (String[]) Speed.speedUnits.clone();
                     break;
 
                 case 7:
                     // 데이터도 맵 필요없음
-                    num2Unit = (String[]) Data.dataUnits.clone();
+                    unitList = (String[]) Data.dataUnits.clone();
                     break;
 
                 case 8:
@@ -97,7 +97,7 @@ public class Main {
                      * api호출하려면 환율사이트에 요청도 해야되는데ㅔ......
                      * 언제하냐 ㄹㅇ
                      */
-                    num2Unit = (String[]) Currency.monetaryUnits.clone();
+                    unitList = (String[]) Currency.monetaryUnits.clone();
                     System.out.println("미완성입니다 돌아가세요 ㅠㅠ");
                     continue;
 
@@ -110,14 +110,14 @@ public class Main {
         }
         
         // 단위별로 번호 프린트
-        for (int i = 0; i < num2Unit.length; i++) {
+        for (int i = 0; i < unitList.length; i++) {
             if (i % 4 == 0 && i < 12) {
                 System.out.print("\n");
             }
 
-            System.out.print((i + 1) + ". " + num2Unit[i] + "   ");
+            System.out.print((i + 1) + ". " + unitList[i] + "   ");
 
-            if (i == num2Unit.length - 1) {
+            if (i == unitList.length - 1) {
                 System.out.println();
             }
         }
@@ -128,7 +128,7 @@ public class Main {
                 select = sc.nextInt();
                 sc.nextLine();
 
-                if (select < 1 || select > num2Unit.length) { // num2Unit 배열 인덱스에 맞지않는것은 거름
+                if (select < 1 || select > unitList.length) { // unitList 배열 인덱스에 맞지않는것은 거름
                     System.out.println("올바르게 입력해 주세요!");
                     continue;
                 }
@@ -144,7 +144,7 @@ public class Main {
          * 사용자 입력값: 1~length (편의상 1부터)
          * 배열 인덱스: 0~(length-1)
          */
-        selectedUnit = num2Unit[select - 1];
+        selectedUnit = unitList[select - 1];
         
         while (true) {
             try {
@@ -167,28 +167,28 @@ public class Main {
 
             for (int i = 0; i < 3; i++) {
                 System.out.print(formatResult(results[i]) + " ");
-                System.out.println(num2Unit[i]);
+                System.out.println(unitList[i]);
             }
         } else if (category == 7) {
             double[] results = Data.calculateData(finding, select);
 
             for (int i = 0; i < 8; i++) {
                 System.out.print(formatResult(results[i]) + " ");
-                System.out.println(num2Unit[i]);
+                System.out.println(unitList[i]);
             }
         } else {
             if (category == 8) { // 환율계산은 최신 환율정보를 불러오기 위해 api 호출 필요
                 Currency.getAPI();
                 Currency.getExchange(map);
 
-                if (select != 2) { // 달러(num2Unit[1]) 기준
+                if (select != 2) { // 달러(unitList[1]) 기준
                     finding /= map.get(selectedUnit);
                 }
             } else if (select != 1) {
                 finding /= map.get(selectedUnit);
             }
 
-            for (String i : num2Unit) { // 기준 단위로 된 값을 각 단위별로 변환
+            for (String i : unitList) { // 기준 단위로 된 값을 각 단위별로 변환
                 System.out.print(formatResult(finding * map.get(i)) + " ");
                 System.out.println(i);
             }
