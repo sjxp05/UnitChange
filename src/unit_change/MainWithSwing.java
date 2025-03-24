@@ -13,6 +13,7 @@ public class MainWithSwing extends JFrame {
     HashMap<String, Double> map = new HashMap<>(); // 단위 - 값 저장하는 맵
     String[] categories = { "길이", "넓이", "부피", "무게", "온도", "속도", "데이터양" }; // 버튼 텍스트로 쓸 배열
     String[] unitList; // 단위 목록
+    int currentCt = -1; // 현재 표시되고 있는 카테고리
 
     JPanel ctPanel = new JPanel(); // 입력창, 콤보박스, 버튼, 결과창 모두 넣은 패널
     JComboBox<String> unitChoose = new JComboBox<>(); // 단위 선택 콤보박스
@@ -60,53 +61,53 @@ public class MainWithSwing extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 resultPane.setVisible(true);
                 String results = "<html><body>";
-                double finding = 0;
+                double finding;
                 try {
                     finding = Double.parseDouble(input.getText());
+
+                    if (currentCt == 4) { // 온도 계산
+                        double temps[] = Temperature.calculateTemp(finding, unitChoose.getSelectedIndex() + 1);
+
+                        for (int i = 0; i < unitList.length; i++) {
+                            results += (formatResult(temps[i]) + " " + unitList[i]);
+                            if (i == unitList.length - 1) {
+                                results += "</body></html>";
+                            } else {
+                                results += "<br>";
+                            }
+                        }
+                        resultLb.setText(results);
+
+                    } else if (currentCt == 6) { // 데이터양 계산
+                        double data[] = Data.calculateData(finding, unitChoose.getSelectedIndex() + 1);
+
+                        for (int i = 0; i < unitList.length; i++) {
+                            results += (formatResult(data[i]) + " " + unitList[i]);
+                            if (i == unitList.length - 1) {
+                                results += "</body></html>";
+                            } else {
+                                results += "<br>";
+                            }
+                        }
+                        resultLb.setText(results);
+
+                    } else {
+                        if (unitChoose.getSelectedIndex() != 0) {
+                            finding /= map.get(unitChoose.getItemAt(unitChoose.getSelectedIndex()));
+                        }
+
+                        for (int i = 0; i < unitList.length; i++) {
+                            results += (formatResult(finding * map.get(unitList[i])) + " " + unitList[i]);
+                            if (i == unitList.length - 1) {
+                                results += "</body></html>";
+                            } else {
+                                results += "<br>";
+                            }
+                        }
+                        resultLb.setText(results);
+                    }
                 } catch (Exception ex) {
                     resultLb.setText("");
-                }
-                
-                if (unitList.length == 3) {
-                    double temps[] = Temperature.calculateTemp(finding, unitChoose.getSelectedIndex() + 1);
-
-                    for (int i = 0; i < unitList.length; i++) {
-                        results += (formatResult(temps[i]) + " " + unitList[i]);
-                        if (i == unitList.length - 1) {
-                            results += "</body></html>";
-                        } else {
-                            results += "<br>";
-                        }
-                    }
-                    resultLb.setText(results);
-
-                } else if (unitList[0] == "bit") {
-                    double data[] = Data.calculateData(finding, unitChoose.getSelectedIndex() + 1);
-
-                    for (int i = 0; i < unitList.length; i++) {
-                        results += (formatResult(data[i]) + " " + unitList[i]);
-                        if (i == unitList.length - 1) {
-                            results += "</body></html>";
-                        } else {
-                            results += "<br>";
-                        }
-                    }
-                    resultLb.setText(results);
-                        
-                } else {
-                    if (unitChoose.getSelectedIndex() != 0) {
-                        finding /= map.get(unitChoose.getItemAt(unitChoose.getSelectedIndex()));
-                    }
-
-                    for (int i = 0; i < unitList.length; i++) {
-                        results += (formatResult(finding * map.get(unitList[i])) + " " + unitList[i]);
-                        if (i == unitList.length - 1) {
-                            results += "</body></html>";
-                        } else {
-                            results += "<br>";
-                        }
-                    }
-                    resultLb.setText(results);
                 }
             }
         });
@@ -125,11 +126,11 @@ public class MainWithSwing extends JFrame {
             add(ctButtons[i]);
 
             switch (i) {
-                case 0:
+                case 0: // 길이
                     ctButtons[i].addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            clearUI();
+                            clearUI(0);
                             map = Length.getLength(map);
                             unitList = (String[]) Length.lengthUnits.clone();
                             for (String i : Length.lengthUnits) {
@@ -139,11 +140,11 @@ public class MainWithSwing extends JFrame {
                     });
                     break;
 
-                case 1:
+                case 1: // 넓이
                     ctButtons[i].addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            clearUI();
+                            clearUI(1);
                             map = Width.getWidth(map);
                             unitList = (String[]) Width.widthUnits.clone();
                             for (String i : Width.widthUnits) {
@@ -153,11 +154,11 @@ public class MainWithSwing extends JFrame {
                     });
                     break;
 
-                case 2:
+                case 2: // 부피
                     ctButtons[i].addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            clearUI();
+                            clearUI(2);
                             map = Volume.getVolume(map);
                             unitList = (String[]) Volume.volumeUnits.clone();
                             for (String i : Volume.volumeUnits) {
@@ -167,11 +168,11 @@ public class MainWithSwing extends JFrame {
                     });
                     break;
 
-                case 3:
+                case 3: // 무게
                     ctButtons[i].addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            clearUI();
+                            clearUI(3);
                             map = Weight.getWeight(map);
                             unitList = (String[]) Weight.weightUnits.clone();
                             for (String i : Weight.weightUnits) {
@@ -181,11 +182,11 @@ public class MainWithSwing extends JFrame {
                     });
                     break;
 
-                case 4:
+                case 4: // 온도
                     ctButtons[i].addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            clearUI();
+                            clearUI(4);
                             unitList = (String[]) Temperature.tempUnits.clone();
                             for (String i : Temperature.tempUnits) {
                                 unitChoose.addItem(i);
@@ -194,11 +195,11 @@ public class MainWithSwing extends JFrame {
                     });
                     break;
 
-                case 5:
+                case 5: // 속도
                     ctButtons[i].addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            clearUI();
+                            clearUI(5);
                             map = Speed.getSpeed(map);
                             unitList = (String[]) Speed.speedUnits.clone();
                             for (String i : Speed.speedUnits) {
@@ -208,11 +209,11 @@ public class MainWithSwing extends JFrame {
                     });
                     break;
 
-                case 6:
+                case 6: // 데이터양
                     ctButtons[i].addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            clearUI();
+                            clearUI(6);
                             unitList = (String[]) Data.dataUnits.clone();
                             for (String i : Data.dataUnits) {
                                 unitChoose.addItem(i);
@@ -229,14 +230,19 @@ public class MainWithSwing extends JFrame {
         setVisible(true);
     }
     
-    void clearUI() {
-        input.setText("");
-        resultLb.setText("");
-        unitChoose.removeAllItems();
-        ctPanel.setVisible(true);
-        map.clear();
+    // 다른 카테고리 선택했을 시 입력한 내용 지우기
+    void clearUI(int newCt) {
+        if (currentCt != newCt) {
+            currentCt = newCt;
+            input.setText("");
+            resultLb.setText("");
+            unitChoose.removeAllItems();
+            ctPanel.setVisible(true);
+            map.clear();
+        }
     }
     
+    // 숫자 형식 이쁘게 바꾸기
     String formatResult(double value) {
         String formatted = String.format("%.9g", value);
         int i;
