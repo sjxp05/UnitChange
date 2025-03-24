@@ -10,9 +10,9 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 
 public class MainWithSwing extends JFrame {
-    static HashMap<String, Double> map = new HashMap<>(); // 단위 - 값 저장하는 맵
-    static String[] categories = { "길이", "넓이", "부피", "무게", "온도", "속도", "환율" }; // 버튼 텍스트로 쓸 배열
-    static String[] unitList; // 단위 목록
+    HashMap<String, Double> map = new HashMap<>(); // 단위 - 값 저장하는 맵
+    String[] categories = { "길이", "넓이", "부피", "무게", "온도", "속도", "데이터양" }; // 버튼 텍스트로 쓸 배열
+    String[] unitList; // 단위 목록
 
     JPanel ctPanel = new JPanel(); // 입력창, 콤보박스, 버튼, 결과창 모두 넣은 패널
     JComboBox<String> unitChoose = new JComboBox<>(); // 단위 선택 콤보박스
@@ -24,14 +24,14 @@ public class MainWithSwing extends JFrame {
     public MainWithSwing() {
         // 전체 창 설정
         setTitle("단위 변환기");
-        setSize(500, 440);
+        setSize(520, 440);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
 
         // 패널
         ctPanel.setLayout(null);
-        ctPanel.setBounds(35, 80, 420, 290);
+        ctPanel.setBounds(45, 80, 420, 290);
         ctPanel.setBorder(new LineBorder(Color.GRAY));
         add(ctPanel);
         ctPanel.setVisible(false);
@@ -59,47 +59,54 @@ public class MainWithSwing extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 resultPane.setVisible(true);
+                String results = "<html><body>";
+                double finding = 0;
+                try {
+                    finding = Double.parseDouble(input.getText());
+                } catch (Exception ex) {
+                    resultLb.setText("");
+                }
+                
                 if (unitList.length == 3) {
-                    String results = "<html><body>";
-                    try {
-                        double finding = Double.parseDouble(input.getText());
-                        double temps[] = Temperature.calculateTemp(finding, unitChoose.getSelectedIndex() + 1);
+                    double temps[] = Temperature.calculateTemp(finding, unitChoose.getSelectedIndex() + 1);
 
-                        for (int i = 0; i < unitList.length; i++) {
-                            results += (formatResult(temps[i]) + " " + unitList[i]);
-                            if (i == unitList.length - 1) {
-                                results += "</body></html>";
-                            } else {
-                                results += "<br>";
-                            }
+                    for (int i = 0; i < unitList.length; i++) {
+                        results += (formatResult(temps[i]) + " " + unitList[i]);
+                        if (i == unitList.length - 1) {
+                            results += "</body></html>";
+                        } else {
+                            results += "<br>";
                         }
-                        resultLb.setText(results);
-
-                    } catch (Exception ex) {
-                        resultLb.setText("");
                     }
+                    resultLb.setText(results);
+
+                } else if (unitList[0] == "bit") {
+                    double data[] = Data.calculateData(finding, unitChoose.getSelectedIndex() + 1);
+
+                    for (int i = 0; i < unitList.length; i++) {
+                        results += (formatResult(data[i]) + " " + unitList[i]);
+                        if (i == unitList.length - 1) {
+                            results += "</body></html>";
+                        } else {
+                            results += "<br>";
+                        }
+                    }
+                    resultLb.setText(results);
+                        
                 } else {
-                    String results = "<html><body>";
-                    try {
-                        double finding = Double.parseDouble(input.getText());
-
-                        if (unitChoose.getSelectedIndex() != 0) {
-                            finding /= map.get(unitChoose.getItemAt(unitChoose.getSelectedIndex()));
-                        }
-
-                        for (int i = 0; i < unitList.length; i++) {
-                            results += (formatResult(finding * map.get(unitList[i])) + " " + unitList[i]);
-                            if (i == unitList.length - 1) {
-                                results += "</body></html>";
-                            } else {
-                                results += "<br>";
-                            }
-                        }
-                        resultLb.setText(results);
-
-                    } catch (Exception ex) {
-                        resultLb.setText("");
+                    if (unitChoose.getSelectedIndex() != 0) {
+                        finding /= map.get(unitChoose.getItemAt(unitChoose.getSelectedIndex()));
                     }
+
+                    for (int i = 0; i < unitList.length; i++) {
+                        results += (formatResult(finding * map.get(unitList[i])) + " " + unitList[i]);
+                        if (i == unitList.length - 1) {
+                            results += "</body></html>";
+                        } else {
+                            results += "<br>";
+                        }
+                    }
+                    resultLb.setText(results);
                 }
             }
         });
@@ -109,7 +116,12 @@ public class MainWithSwing extends JFrame {
         JButton[] ctButtons = new JButton[7];
         for (int i = 0; i < categories.length; i++) {
             ctButtons[i] = new JButton(categories[i]);
-            ctButtons[i].setBounds(70 * i, 0, 68, 50);
+            ctButtons[i].setFont(new Font("Sans Serif", Font.BOLD, 12));
+            if (i == 6) {
+                ctButtons[i].setBounds(70 * i, 0, 88, 50);
+            } else {
+                ctButtons[i].setBounds(70 * i, 0, 68, 50);
+            }
             add(ctButtons[i]);
 
             switch (i) {
@@ -201,6 +213,10 @@ public class MainWithSwing extends JFrame {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             clearUI();
+                            unitList = (String[]) Data.dataUnits.clone();
+                            for (String i : Data.dataUnits) {
+                                unitChoose.addItem(i);
+                            }
                         }
                     });
                     break;
@@ -213,18 +229,19 @@ public class MainWithSwing extends JFrame {
         setVisible(true);
     }
     
-    public void clearUI() {
+    void clearUI() {
         input.setText("");
+        resultLb.setText("");
         unitChoose.removeAllItems();
         ctPanel.setVisible(true);
         map.clear();
     }
     
-    static String formatResult(double value) {
+    String formatResult(double value) {
         String formatted = String.format("%.9g", value);
         int i;
 
-        if (formatted.indexOf(".", 0) >= 0) {
+        if (formatted.indexOf(".", 0) >= 0 && formatted.indexOf("e", 0) < 0) {
             for (i = formatted.length() - 1; i >= 0; i--) {
                 if (formatted.charAt(i) != '0') {
                     break;

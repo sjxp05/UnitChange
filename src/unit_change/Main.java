@@ -13,7 +13,7 @@ public class Main {
         String formatted = String.format("%.9g", value);
         int i;
 
-        if (formatted.indexOf(".", 0) >= 0) {
+        if (formatted.indexOf(".", 0) >= 0 && formatted.indexOf("e", 0) < 0) {
             for (i = formatted.length() - 1; i >= 0; i--) {
                 if (formatted.charAt(i) != '0') {
                     break;
@@ -37,11 +37,11 @@ public class Main {
         String selectedUnit = ""; // 사용자가 선택한 단위(별건없고 그냥 꾸밈용도)
         double finding; // 단위변환 하려는 값
 
-        System.out.println("============================================");
+        System.out.println("=================================================");
         System.out.println("단위 변환 프로그램\n");
         System.out.println("1. 길이   2. 넓이   3. 부피   4. 무게");
-        System.out.println("5. 온도   6. 속도   7. 환율(미완성)");
-        System.out.println("============================================");
+        System.out.println("5. 온도   6. 속도   7. 데이터량   8. 환율(미완성)");
+        System.out.println("=================================================");
 
         while (true) {
             System.out.print("\n번호를 입력하세요: ");
@@ -86,6 +86,11 @@ public class Main {
                     break;
 
                 case 7:
+                    // 데이터도 맵 필요없음
+                    num2Unit = (String[]) Data.dataUnits.clone();
+                    break;
+
+                case 8:
                     /*
                      * 수정을..... 해야되는데에.....
                      * 근데 그러려면 api 호출 공부해야되는데...
@@ -164,8 +169,15 @@ public class Main {
                 System.out.print(formatResult(results[i]) + " ");
                 System.out.println(num2Unit[i]);
             }
+        } else if (category == 7) {
+            double[] results = Data.calculateData(finding, select);
+
+            for (int i = 0; i < 8; i++) {
+                System.out.print(formatResult(results[i]) + " ");
+                System.out.println(num2Unit[i]);
+            }
         } else {
-            if (category == 7) { // 환율계산은 최신 환율정보를 불러오기 위해 api 호출 필요
+            if (category == 8) { // 환율계산은 최신 환율정보를 불러오기 위해 api 호출 필요
                 Currency.getAPI();
                 Currency.getExchange(map);
 
