@@ -14,6 +14,7 @@ public class MainWithSwing extends JFrame {
     String[] categories = { "길이", "넓이", "부피", "무게", "온도", "속도", "데이터양" }; // 버튼 텍스트로 쓸 배열
     String[] unitList; // 단위 목록
     int currentCt = -1; // 현재 표시되고 있는 카테고리
+    Color selectedColor = new Color(180, 210, 240); // 버튼 색깔
 
     JPanel ctPanel = new JPanel(); // 입력창, 콤보박스, 버튼, 결과창 모두 넣은 패널
     JComboBox<String> unitChoose = new JComboBox<>(); // 단위 선택 콤보박스
@@ -21,6 +22,7 @@ public class MainWithSwing extends JFrame {
     JLabel resultLb = new JLabel(); // 결과 표시 라벨
     JScrollPane resultPane = new JScrollPane(resultLb); // 긴 라벨을 표시하기 위한 스크롤팬
     JButton calcBt = new JButton("변환"); // 변환 수행 버튼
+    JButton[] ctButtons = new JButton[7]; // 분류별 버튼
 
     public MainWithSwing() {
         // 전체 창 설정
@@ -114,10 +116,10 @@ public class MainWithSwing extends JFrame {
         ctPanel.add(calcBt);
 
         // 분류별 버튼
-        JButton[] ctButtons = new JButton[7];
         for (int i = 0; i < categories.length; i++) {
             ctButtons[i] = new JButton(categories[i]);
             ctButtons[i].setFont(new Font("Sans Serif", Font.BOLD, 12));
+            ctButtons[i].setBackground(Color.LIGHT_GRAY);
             if (i == 6) {
                 ctButtons[i].setBounds(70 * i, 0, 88, 50);
             } else {
@@ -233,7 +235,12 @@ public class MainWithSwing extends JFrame {
     // 다른 카테고리 선택했을 시 입력한 내용 지우기
     void clearUI(int newCt) {
         if (currentCt != newCt) {
+            if (currentCt >= 0) {
+                ctButtons[currentCt].setBackground(Color.LIGHT_GRAY);
+            }
+            ctButtons[newCt].setBackground(selectedColor);
             currentCt = newCt;
+
             input.setText("");
             resultLb.setText("");
             unitChoose.removeAllItems();
