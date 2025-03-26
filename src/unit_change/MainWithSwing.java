@@ -29,7 +29,7 @@ public class MainWithSwing extends JFrame {
         setTitle("단위 변환기");
         setSize(520, 440);
         setResizable(false);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(null);
 
         // 패널
