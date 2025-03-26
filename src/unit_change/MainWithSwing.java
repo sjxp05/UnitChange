@@ -109,6 +109,7 @@ public class MainWithSwing extends JFrame {
                         resultLb.setText(results);
                     }
                 } catch (Exception ex) {
+                    input.setText("");
                     resultLb.setText("");
                 }
             }
