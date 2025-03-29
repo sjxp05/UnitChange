@@ -20,6 +20,7 @@ public class MainWithSwing extends JFrame {
     JComboBox<String> unitChoose = new JComboBox<>(); // 단위 선택 콤보박스
     JTextField input = new JTextField(); // 변환할 값 입력
     JLabel resultLb = new JLabel(); // 결과 표시 라벨
+    JLabel introLb = new JLabel("분류를 선택하여 단위 변환을 시작해 보세요!"); // 처음에 나오는 안내문구
     JScrollPane resultPane = new JScrollPane(resultLb); // 긴 라벨을 표시하기 위한 스크롤팬
     JButton calcBt = new JButton("변환"); // 변환 수행 버튼
     JButton[] ctButtons = new JButton[7]; // 분류별 버튼
@@ -29,6 +30,7 @@ public class MainWithSwing extends JFrame {
         setTitle("단위 변환기");
         setSize(520, 440);
         setResizable(false);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(null);
 
@@ -52,6 +54,13 @@ public class MainWithSwing extends JFrame {
         // 결과창
         resultLb.setFont(new Font("Sans Serif", Font.PLAIN, 15));
 
+        // 안내문구
+        introLb.setFont(new Font("Sans Serif", Font.PLAIN, 15));
+        introLb.setForeground(Color.GRAY);
+        introLb.setHorizontalAlignment(JLabel.CENTER);
+        introLb.setBounds(100, 210, 300, 30);
+        add(introLb);
+
         // 결과스크롤팬
         resultPane.setBounds(20, 70, 380, 200);
         ctPanel.add(resultPane);
@@ -61,7 +70,6 @@ public class MainWithSwing extends JFrame {
         calcBt.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                resultPane.setVisible(true);
                 String results = "<html><body>";
                 double finding;
                 try {
@@ -232,11 +240,13 @@ public class MainWithSwing extends JFrame {
 
         setVisible(true);
     }
-    
+
     // 다른 카테고리 선택했을 시 입력한 내용 지우기
     void clearUI(int newCt) {
         if (currentCt != newCt) {
-            if (currentCt >= 0) {
+            if (currentCt == -1) {
+                introLb.setVisible(false);
+            } else {
                 ctButtons[currentCt].setBackground(Color.LIGHT_GRAY);
             }
             ctButtons[newCt].setBackground(selectedColor);
@@ -249,7 +259,7 @@ public class MainWithSwing extends JFrame {
             map.clear();
         }
     }
-    
+
     // 숫자 형식 이쁘게 바꾸기
     String formatResult(double value) {
         String formatted = String.format("%.9g", value);
