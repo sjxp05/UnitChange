@@ -21,7 +21,7 @@ public class MainWithSwing extends JFrame {
     JTextField input = new JTextField(); // 변환할 값 입력
     JLabel resultLb = new JLabel(); // 결과 표시 라벨
     JLabel introLb = new JLabel("분류를 선택하여 단위 변환을 시작해 보세요!"); // 처음에 나오는 안내문구
-    JScrollPane resultPane = new JScrollPane(resultLb); // 긴 라벨을 표시하기 위한 스크롤팬
+    JScrollPane resultPane = new JScrollPane(resultLb); // 긴 라벨을 표시하기 위한 스크롤페인
     JButton calcBt = new JButton("변환"); // 변환 수행 버튼
     JButton[] ctButtons = new JButton[7]; // 분류별 버튼
 
@@ -61,7 +61,7 @@ public class MainWithSwing extends JFrame {
         introLb.setBounds(100, 210, 300, 30);
         add(introLb);
 
-        // 결과스크롤팬
+        // 결과스크롤페인
         resultPane.setBounds(20, 70, 380, 200);
         ctPanel.add(resultPane);
 
