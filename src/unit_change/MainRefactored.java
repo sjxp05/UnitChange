@@ -91,6 +91,7 @@ public class MainRefactored extends JFrame implements ActionListener, MouseListe
         setVisible(true);
     }
 
+    // 카테고리 다시 골랐을 때 초기화
     void clear() {
         unitChoose.removeAllItems();
         unitMap.clear();
@@ -102,6 +103,7 @@ public class MainRefactored extends JFrame implements ActionListener, MouseListe
         repaint();
     }
 
+    // 결과창에 단위변환한 결과 한줄씩 프린트
     void printResults(ArrayList<Double> results) {
 
         StringBuffer sbf = new StringBuffer("<html><body>");
@@ -120,12 +122,14 @@ public class MainRefactored extends JFrame implements ActionListener, MouseListe
         resultPane.setText(sbf.toString());
     }
 
+    // 숫자 보기좋게 포맷
     String formatResult(double result) {
 
         String formatted = String.format("%.9g", result);
         int i;
 
         if (formatted.indexOf(".", 0) >= 0 && formatted.indexOf("e", 0) < 0) {
+
             for (i = formatted.length() - 1; i >= 0; i--) {
                 if (formatted.charAt(i) != '0') {
                     break;
@@ -143,11 +147,11 @@ public class MainRefactored extends JFrame implements ActionListener, MouseListe
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e) { // 계산 버튼 눌렀을 때
 
-        double toCalculate = 0.0;
-        int selectedUnit = unitChoose.getSelectedIndex();
-        ArrayList<Double> results = new ArrayList<>();
+        double toCalculate = 0.0; // 입력받을 수
+        int selectedUnit = unitChoose.getSelectedIndex(); // 사용자가 선택중인 단위
+        ArrayList<Double> results = new ArrayList<>(); // 모든 단위별 결과값
 
         try {
             toCalculate = Double.parseDouble(input.getText());
