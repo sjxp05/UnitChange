@@ -5,20 +5,22 @@ public class Temperature {
 
     public static double[] calculateTemp(double finding, int select) {
         double[] results = new double[3];
-        results[select - 1] = finding;
+        results[select] = finding;
 
-        if (select == 1) {
+        if (select == 0) { // 섭씨일 때
             results[1] = (finding * 9 / 5) + 32;
             results[2] = finding + 273.15;
-        } else if (select == 2) {
+
+        } else if (select == 1) { // 화씨
             results[0] = (finding - 32) * 5 / 9;
             results[2] = results[0] + 273.15;
-        } else {
+
+        } else { // 캘빈
             results[0] = finding - 273.15;
             results[1] = (results[0] * 9 / 5) + 32;
         }
 
         return results;
     }
-    
+
 }

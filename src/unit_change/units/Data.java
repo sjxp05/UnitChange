@@ -5,21 +5,22 @@ public class Data {
 
     public static double[] calculateData(double finding, int select) {
         double[] calculated = new double[8];
-        calculated[select - 1] = finding;
+        calculated[select] = finding;
 
-        if (select == 1) {
+        if (select == 0) { // bit 단위 선택시(비트->바이트 변환 미리 해주기)
             calculated[1] = calculated[0] / 8;
             for (int i = 2; i < 8; i++) {
                 calculated[i] = calculated[i - 1] / 1024;
             }
-        } else {
-            for (int i = select - 2; i >= 1; i--) {
+
+        } else { // Byte 단위 선택시(바이트->비트 변환 필요)
+            for (int i = select - 1; i >= 1; i--) {
                 calculated[i] = calculated[i + 1] * 1024;
             }
 
             calculated[0] = calculated[1] * 8;
 
-            for (int i = select; i < 8; i++) {
+            for (int i = select + 1; i < 8; i++) {
                 calculated[i] = calculated[i - 1] / 1024;
             }
         }
