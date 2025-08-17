@@ -26,7 +26,7 @@ public class MainWithSwing extends JFrame {
     JButton[] ctButtons = new JButton[7]; // 분류별 버튼
 
     public MainWithSwing() {
-        // 전체 창 설정
+        // 전체 창 크기, 옵션 등 설정
         setTitle("단위 변환기");
         setSize(520, 440);
         setResizable(false);
