@@ -1,18 +1,14 @@
-## Getting Started
+## Java를 활용한 단위 변환기
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+자바를 활용하여 프롬프트만을 사용하는 버전, GUI(Swing)을 사용하여 시각적으로 나타낸 버전 총 2가지의 단위 변환 프로그램을 제작하였습니다.
 
-## Folder Structure
-
-The workspace contains two folders by default, where:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+- 계산 가능한 단위
+  - 길이
+  - 넓이
+  - 부피
+  - 무게
+  - 온도
+  - 속도
+  - 데이터양
+ 
+- 추가로 실시간 환율을 구해 단위 변환을 해 주는 메뉴도 구현하려고 생각 중인데, 이를 위해서는 관련 기관에서 받은 무료 API를 호출해야 하기 때문에 해당 기관에 신청 절차를 거쳐야 합니다. 현재 진행 중인 프로젝트가 끝나면 시도해 볼 생각입니다
