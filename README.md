@@ -2,6 +2,11 @@
 
 자바를 활용하여 프롬프트만을 사용하는 버전, GUI(Swing)을 사용하여 시각적으로 나타낸 버전 총 2가지의 단위 변환 프로그램을 제작하였습니다.
 
+- 버전 정보
+  - `Main.java`: 프롬프트만 사용
+  - `MainWithSwing.java`: GUI를 사용한 버전 (단위 바꿀때는 버튼 사용)
+  - `MainRefactored.java`: 업그레이드된 GUI 버전 (단위 바꿀때 메뉴바 + ActionListener 등 활용)
+
 - 계산 가능한 단위
   - 길이
   - 넓이
